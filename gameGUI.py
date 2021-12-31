@@ -3,7 +3,7 @@ from tkinter import *
 from functools import partial
 from tkinter import messagebox
 
-from BlobWars.bordWars import BordWars
+from bordWars import BordWars
 
 turn = 0
 COLORX = 'hotpink'

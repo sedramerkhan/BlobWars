@@ -1,6 +1,6 @@
 from functools import partial
 from tkinter import *
-from BlobWars.gameGUI import GameGui
+from gameGUI import GameGui
 
 
 class MenuGUI:
