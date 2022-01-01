@@ -1,15 +1,14 @@
 from tkinter import Place
-
+import copy 
 
 class BordWars:
     def __init__(self, width, height,player):
         self.width = width
         self.height = height
-        self.board = [["-" for _ in range(width)] for _ in range(width)]
+        self.board = [["-" for _ in range(width)] for _ in range(height)]
         self.board[0][0] = self.board[0][-1] = "X"
         self.board[-1][0] = self.board[-1][-1] = "O"
         self.player = player
-        print(self)
 
     def check_win(self, player="X"):
         """
@@ -128,6 +127,29 @@ class BordWars:
     def next_turn(self):
         return "O" if self.player == "X" else "X"
 
+    def next_states(self):
+        out = {}
+        for i in range(self.height):
+            for j in range(self.width):
+                if self.board[i][j] == self.player:
+                    out [(i,j)] =self.next_states_at(i,j)
+        return out
+    
 
+    def next_states_at(self,i,j):
+        out = {}
+        first_move = self.get_boarder(i,j,1)
+        second_move = self.get_boarder(i,j,2)
+        for n,m in first_move | second_move:
+            #try:
+                state = copy.deepcopy(self)
+                state.move(i,j,n,m)
+                out[n,m]=state
+            #except:
+            #    print(f"ignored state at {n},{m}")
+        return out
+
+            
 if __name__ == "__main__":
-    game = BordWars(10, 12)
+    game = BordWars(10, 12,"X")
+    print(len(game.next_states()[0].next_states()))
