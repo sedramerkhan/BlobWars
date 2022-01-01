@@ -4,6 +4,7 @@ from tkinter import *
 from tkinter import messagebox
 
 from bordWars import BordWars
+from minmax import minmax
 
 turn = 0
 COLORX = "hotpink"
@@ -40,9 +41,8 @@ class GameGui:
 
     # Configure text on button while playing with another player
     def get_move(self, i, j, gui, p1, p2):
-
         self.update_gui(i, j, p2, p1, gui)
-
+            
     def update_gui(self, i, j, p1, p2, gui):
         button = self.buttons
         player = self.bordWars.player
@@ -84,8 +84,14 @@ class GameGui:
                 p1.config(state=DISABLED)
                 p2.config(state=ACTIVE)
                 self.check_win(gui)
-            except:
-                print("error")
+                fromm,to = minmax(self.bordWars,1,self.bordWars.player,True)[0]
+                print("this is from , to ",fromm,to)
+                (n,m),(i,j) = fromm,to 
+                updated = self.bordWars.move(n,m,i,j)
+                for (n, m) in updated + [(i,j),(n,m)]:
+                    self.update_color_at(n,m)
+            except ValueError as e:
+                print("error",e)
                 pass
 
     # returning to default color
@@ -134,8 +140,6 @@ class GameGui:
         else:
             color = COLOR
         self.buttons[i][j]["bg"] = color 
-    def pc(self):
-        pass
 
     # Initialize the game board to play with system / another player
     def initialize(self):
