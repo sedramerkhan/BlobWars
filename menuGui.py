@@ -1,5 +1,6 @@
 from functools import partial
 from tkinter import *
+
 from gameGUI import GameGui
 
 
@@ -14,12 +15,9 @@ class MenuGUI:
         menu.title("Bord Wars")
         entry_frame = self.initialize_enties()
 
-        wpc = partial(self.play, "Compter")
-        wpl = partial(self.play, "Player 2")
-
         head = Label(menu, text="Welcome to Bord Wars Game", bg="snow", fg="black", font='Times 15', height=3)
-        B1 = self.make_button(menu, "Single Player", lambda: self.play("Computer"))
-        B2 = self.make_button(menu, "Multi Player", wpl)
+        B1 = self.make_button(menu, "Single Player", partial(self.play, "Compter"))
+        B2 = self.make_button(menu, "Multi Player", partial(self.play, "Player 2"))
         B3 = self.make_button(menu, "Exit", menu.quit)
 
         head.pack(side='top')
