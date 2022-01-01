@@ -1,8 +1,9 @@
 from tkinter import Place
-import copy 
+import copy
+
 
 class BordWars:
-    def __init__(self, width, height,player):
+    def __init__(self, width, height, player):
         self.width = width
         self.height = height
         self.board = [["-" for _ in range(width)] for _ in range(height)]
@@ -53,24 +54,26 @@ class BordWars:
             return True
         return False
 
-    def move(self, fi,fj,ti,tj):
-        first_boarder ,second_boarder= self.get_boarder(fi,fj,1),self.get_boarder(fi,fj,2)
-        if (ti,tj) in first_boarder:
-            self.first_move(fi,fj,ti,tj)
-        elif (ti,tj) in second_boarder:
-            self.second_move(fi,fj,ti,tj)
+    def move(self, fi, fj, ti, tj):
+        first_boarder, second_boarder = self.get_boarder(fi, fj, 1), self.get_boarder(
+            fi, fj, 2
+        )
+        if (ti, tj) in first_boarder:
+            self.first_move(fi, fj, ti, tj)
+        elif (ti, tj) in second_boarder:
+            self.second_move(fi, fj, ti, tj)
         else:
-            print("error move"+str((fi,fj)) + " "+str((ti,tj))) 
-            raise BaseException("error move"+str((fi,fj)) + " "+str((ti,tj)))
-        updated = self.update_board(ti,tj)
+            print("error move" + str((fi, fj)) + " " + str((ti, tj)))
+            raise ValueError("error move" + str((fi, fj)) + " " + str((ti, tj)))
+        updated = self.update_board(ti, tj)
         self.player = self.next_turn()
 
         return updated
-        
-    def first_move(self,fi,fj,ti,tj):
+
+    def first_move(self, fi, fj, ti, tj):
         self.board[ti][tj] = self.player
 
-    def second_move(self,fi,fj,ti,tj):
+    def second_move(self, fi, fj, ti, tj):
         self.board[fi][fj] = "-"
         self.board[ti][tj] = self.player
         pass
@@ -82,9 +85,9 @@ class BordWars:
         self.board[i][j] = player
         for c in range(start_y, end_y + 1):
             if self.update_cell(start_x, c):
-                updated.append((start_x,c))
+                updated.append((start_x, c))
             if self.update_cell(end_x, c):
-                updated.append((end_x,c))
+                updated.append((end_x, c))
 
         self.update_cell(i, start_y)
         self.update_cell(i, end_y)
@@ -110,46 +113,58 @@ class BordWars:
     def get_boarder(self, i, j, size):
         start_x, end_x, start_y, end_y = self.calc_indexes(i, j, size)
         l = set()
-        for c in [start_y,end_y]:
+        for c in [start_y, end_y]:
             if c != j:
-                for r in range(start_x,end_x+1):
+                for r in range(start_x, end_x + 1):
                     if self.board[r][c] == "-":
                         l.add((r, c))
 
-        for r in [start_x,end_x]:
+        for r in [start_x, end_x]:
             if r != i:
-                for c in range(start_y,end_y+1):
+                for c in range(start_y, end_y + 1):
                     if self.board[r][c] == "-":
                         l.add((r, c))
 
         return l
 
+    def is_end(self):
+        return bool(self.check_win())
+
     def next_turn(self):
         return "O" if self.player == "X" else "X"
 
     def next_states(self):
+        if self.check_win():
+            return {}
         out = {}
         for i in range(self.height):
             for j in range(self.width):
                 if self.board[i][j] == self.player:
-                    out [(i,j)] =self.next_states_at(i,j)
+                    out[(i, j)] = self.next_states_at(i, j)
         return out
-    
 
-    def next_states_at(self,i,j):
+    def next_states_at(self, i, j):
         out = {}
-        first_move = self.get_boarder(i,j,1)
-        second_move = self.get_boarder(i,j,2)
-        for n,m in first_move | second_move:
-            #try:
-                state = copy.deepcopy(self)
-                state.move(i,j,n,m)
-                out[n,m]=state
-            #except:
-            #    print(f"ignored state at {n},{m}")
+        first_move = self.get_boarder(i, j, 1)
+        second_move = self.get_boarder(i, j, 2)
+        for n, m in first_move | second_move:
+            # try:
+            state = copy.deepcopy(self)
+            state.move(i, j, n, m)
+            out[n, m] = state
+        # except:
+        #    print(f"ignored state at {n},{m}")
         return out
 
-            
+    def eval(self, player):
+        cx, co = 0, 0
+        for c in range(self.width):
+            for r in range(self.height):
+                cx += self.board[r][c] == "X"
+                co += self.board[r][c] == "O"
+        return cx - co if player == "X" else co - cx
+
+
 if __name__ == "__main__":
-    game = BordWars(10, 12,"X")
+    game = BordWars(10, 12, "X")
     print(len(game.next_states()[0].next_states()))
