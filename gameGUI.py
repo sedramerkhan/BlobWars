@@ -6,7 +6,6 @@ from tkinter import messagebox
 from bordWars import BordWars
 from minmax import minmax
 
-turn = 0
 COLORX = "hotpink"
 COLORO = "cyan"
 COLOR = "lavender"
@@ -24,7 +23,6 @@ class GameGui:
         self.second_player = second_player
         self.pressed_cell = None
         self.buttons = []
-        self.turn_with_2_players = 0
 
     # checking how is the winner
     def check_win(self, gui):
