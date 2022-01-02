@@ -96,10 +96,10 @@ class BordWars:
 
     def calc_indexes(self, i, j, num=1):
 
-        start_x = i - num if i - num >= 0 else i
-        end_x = i + num if i + num < self.height else i
-        start_y = j - num if j - num >= 0 else j
-        end_y = j + num if j + num < self.width else j
+        start_x = i - num if i - num >= 0 else 0
+        end_x = i + num if i + num < self.height else self.height - 1
+        start_y = j - num if j - num >= 0 else 0
+        end_y = j + num if j + num < self.width else self.width - 1
         return start_x, end_x, start_y, end_y
 
     def __str__(self):
