@@ -96,29 +96,15 @@ class GameGui:
 
     # returning to default color
     def delete_first_border(self, i, j, color=COLOR):
-        start_x, end_x, start_y, end_y = self.bordWars.calc_indexes(i, j, 1)
-
-        self.first_border = []
-        for c in range(start_y, end_y + 1):
-            self.set_color(start_x, c, color)
-            self.set_color(end_x, c, color)
-
-        self.set_color(i, start_y, color)
-        self.set_color(i, end_y, color)
-
-    # coloring second border of chosen cell
+        first_boarder = self.bordWars.get_boarder(i, j, 1)
+        for cell in first_boarder:
+            self.set_color(cell[0], cell[1], color)
 
     # returning to default color
     def delete_second_border(self, i, j, color=COLOR):
-        start_x, end_x, start_y, end_y = self.bordWars.calc_indexes(i, j, 2)
-        self.second_border = []
-        for c in range(start_y, end_y + 1):
-            self.set_color(start_x, c, color)
-            self.set_color(end_x, c, color)
-
-        for r in range(start_x, end_x):
-            self.set_color(r, start_y, color)
-            self.set_color(r, end_y, color)
+        second_border = self.bordWars.get_boarder(i, j, 2)
+        for cell in second_border:
+            self.set_color(cell[0], cell[1], color)
 
     # changing color in gui
     def set_color(self, i, j, color):
