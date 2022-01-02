@@ -47,7 +47,7 @@ class GameGui:
         player = self.bordWars.player
         pressed_color = PRESSED_X if player == "X" else PRESSED_O
         color_player = COLORX if player == "X" else COLORO
-        # if self.turn_with_2_players %2 ==0:
+
         if self.bordWars.board[i][j] == player:
             if not self.pressed_cell:
                 self.pressed_cell = (i, j)
@@ -69,11 +69,6 @@ class GameGui:
             n, m = self.pressed_cell
             try:
                 updated = self.bordWars.move(n, m, i, j)
-            # if (i, j) in first_border:
-            #     second_pressed = True
-            # elif (i, j) in second_border:
-            #     second_pressed = True
-            #     self.bordWars.move(n, m)
                 self.delete_first_border(n, m)
                 self.delete_second_border(n, m)
                 self.pressed_cell = None
@@ -81,8 +76,12 @@ class GameGui:
                 for (n, m) in updated + [(i,j),(n,m)]:
                     self.update_color_at(n,m)
 
-                p1.config(state=DISABLED)
-                p2.config(state=ACTIVE, activebackground=COLOR)
+                if player == 'O':
+                    p1.config(state=DISABLED)
+                    p2.config(state=ACTIVE, activebackground=COLOR)
+                else:
+                    p2.config(state=DISABLED)
+                    p1.config(state=ACTIVE, activebackground=COLOR)
                 self.check_win(gui)
 
                 if self.second_player == 'Computer':
@@ -92,6 +91,7 @@ class GameGui:
                     updated = self.bordWars.move(n,m,i,j)
                     for (n, m) in updated + [(i,j),(n,m)]:
                         self.update_color_at(n,m)
+                    self.check_win(gui)
 
             except ValueError as e:
                 print("error",e)
@@ -137,13 +137,13 @@ class GameGui:
         # game_board.eval('tk::PlaceWindow . center')
         game_board.title("Bord Wars")
 
-        p1 = Button(game_board, text=f"Player : pink", width=10, bg=COLOR)
+        p1 = Button(game_board, text=f"Player: pink", width=11, bg=COLOR)
         p1.pack(side="top")
 
         p2 = Button(
             game_board,
-            text=f"{self.second_player} : {COLORO}",
-            width=10,
+            text=f"{self.second_player}: {COLORO}",
+            width=11,
             state=DISABLED,
             bg=COLOR,
         )

@@ -1,4 +1,4 @@
-from tkinter import Place
+
 import copy
 
 
