@@ -77,7 +77,7 @@ class GameGui:
                 self.delete_first_border(n, m)
                 self.delete_second_border(n, m)
                 self.pressed_cell = None
-                button[i][j].config(bg=color_player, activebackground=color_player)
+
                 for (n, m) in updated + [(i,j),(n,m)]:
                     self.update_color_at(n,m)
 

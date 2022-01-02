@@ -89,8 +89,11 @@ class BordWars:
             if self.update_cell(end_x, c):
                 updated.append((end_x, c))
 
-        self.update_cell(i, start_y)
-        self.update_cell(i, end_y)
+        if self.update_cell(i, start_y):
+            updated.append((i, start_y))
+        if self.update_cell(i, end_y):
+            updated.append((i,  end_y))
+
         print(self)
         return updated
 
