@@ -16,7 +16,7 @@ class MenuGUI:
         entry_frame = self.initialize_enties()
 
         head = Label(menu, text="Welcome to Bord Wars Game", bg="snow", fg="black", font='Times 15', height=3)
-        B1 = self.make_button(menu, "Single Player", partial(self.play, "Compter"))
+        B1 = self.make_button(menu, "Single Player", partial(self.play, "Computer"))
         B2 = self.make_button(menu, "Multi Player", partial(self.play, "Player 2"))
         B3 = self.make_button(menu, "Exit", menu.quit)
 

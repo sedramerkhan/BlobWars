@@ -24,6 +24,7 @@ class GameGui:
         self.second_player = second_player
         self.pressed_cell = None
         self.buttons = []
+        self.turn_with_2_players = 0
 
     # checking how is the winner
     def check_win(self, gui):
@@ -48,6 +49,7 @@ class GameGui:
         player = self.bordWars.player
         pressed_color = PRESSED_X if player == "X" else PRESSED_O
         color_player = COLORX if player == "X" else COLORO
+        # if self.turn_with_2_players %2 ==0:
         if self.bordWars.board[i][j] == player:
             if not self.pressed_cell:
                 self.pressed_cell = (i, j)
@@ -84,12 +86,15 @@ class GameGui:
                 p1.config(state=DISABLED)
                 p2.config(state=ACTIVE, activebackground=COLOR)
                 self.check_win(gui)
-                fromm,to = minmax(self.bordWars,1,self.bordWars.player,True)[0]
-                print("this is from , to ",fromm,to)
-                (n,m),(i,j) = fromm,to 
-                updated = self.bordWars.move(n,m,i,j)
-                for (n, m) in updated + [(i,j),(n,m)]:
-                    self.update_color_at(n,m)
+
+                if self.second_player == 'Computer':
+                    fromm,to = minmax(self.bordWars,1,self.bordWars.player,True)[0]
+                    print("this is from , to ",fromm,to)
+                    (n,m),(i,j) = fromm,to
+                    updated = self.bordWars.move(n,m,i,j)
+                    for (n, m) in updated + [(i,j),(n,m)]:
+                        self.update_color_at(n,m)
+
             except ValueError as e:
                 print("error",e)
                 pass
