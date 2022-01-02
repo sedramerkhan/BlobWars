@@ -1,4 +1,5 @@
 # importing all necessary libraries
+import time
 from functools import partial
 from tkinter import *
 from tkinter import messagebox
@@ -16,13 +17,14 @@ COLOR_BORDER1 = "#AAAAAA"
 
 
 class GameGui:
-    def __init__(self, width, height, second_player):
+    def __init__(self, width, height, second_player, level):
         self.bordWars = BordWars(width, height, "X")
         self.width = width
         self.height = height
         self.second_player = second_player
         self.pressed_cell = None
         self.buttons = []
+        self.level = level
 
     # checking how is the winner
     def check_win(self, gui):
@@ -41,12 +43,14 @@ class GameGui:
     # Configure button color while playing with another player
     def get_move(self, i, j, gui, p1, p2):
         self.update_gui(i, j, p2, p1, gui)
-            
+
     def update_gui(self, i, j, p1, p2, gui):
         button = self.buttons
         player = self.bordWars.player
         pressed_color = PRESSED_X if player == "X" else PRESSED_O
         color_player = COLORX if player == "X" else COLORO
+        p11 = p1 if player == 'O' else p2
+        p22 = p2 if player == 'O' else p1
 
         if self.bordWars.board[i][j] == player:
             if not self.pressed_cell:
@@ -73,28 +77,26 @@ class GameGui:
                 self.delete_second_border(n, m)
                 self.pressed_cell = None
 
-                for (n, m) in updated + [(i,j),(n,m)]:
-                    self.update_color_at(n,m)
+                for (n, m) in updated + [(i, j), (n, m)]:
+                    self.update_color_at(n, m)
 
-                if player == 'O':
-                    p1.config(state=DISABLED)
-                    p2.config(state=ACTIVE, activebackground=COLOR)
-                else:
-                    p2.config(state=DISABLED)
-                    p1.config(state=ACTIVE, activebackground=COLOR)
                 self.check_win(gui)
 
                 if self.second_player == 'Computer':
-                    fromm,to = minmax(self.bordWars,1,self.bordWars.player,True)[0]
-                    print("this is from , to ",fromm,to)
-                    (n,m),(i,j) = fromm,to
-                    updated = self.bordWars.move(n,m,i,j)
-                    for (n, m) in updated + [(i,j),(n,m)]:
-                        self.update_color_at(n,m)
+                    fromm, to = minmax(self.bordWars, self.level, self.bordWars.player, True)[0]
+                    print("this is from , to ", fromm, to)
+                    (n, m), (i, j) = fromm, to
+                    updated = self.bordWars.move(n, m, i, j)
+
+                    for (n, m) in updated + [(i, j), (n, m)]:
+                        self.update_color_at(n, m)
                     self.check_win(gui)
+                else:
+                    p11.config(state=DISABLED)
+                    p22.config(state=ACTIVE, activebackground=COLOR)
 
             except ValueError as e:
-                print("error",e)
+                print("error", e)
                 pass
 
     # returning to default color
@@ -114,14 +116,14 @@ class GameGui:
         button = self.buttons
         if self.bordWars.board[i][j] == "-":
             if (
-                button[i][j].cget("bg") == COLOR
+                    button[i][j].cget("bg") == COLOR
             ):  # this is for setting colors for first && second border correctly
                 button[i][j].config(bg=color, activebackground=color)
             if color == COLOR:  # this is for deleting color
                 button[i][j].config(bg=color, activebackground=color)
 
     # Decide the next move of system
-    def update_color_at(self,i,j):
+    def update_color_at(self, i, j):
         if self.bordWars.board[i][j] == "X":
             color = COLORX
         elif self.bordWars.board[i][j] == "O":
