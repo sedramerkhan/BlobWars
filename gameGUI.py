@@ -39,7 +39,7 @@ class GameGui:
             # gui.destroy()
             messagebox.showinfo(text[0], text[1])
 
-    # Configure text on button while playing with another player
+    # Configure button color while playing with another player
     def get_move(self, i, j, gui, p1, p2):
         self.update_gui(i, j, p2, p1, gui)
             
@@ -82,7 +82,7 @@ class GameGui:
                     self.update_color_at(n,m)
 
                 p1.config(state=DISABLED)
-                p2.config(state=ACTIVE)
+                p2.config(state=ACTIVE, activebackground=COLOR)
                 self.check_win(gui)
                 fromm,to = minmax(self.bordWars,1,self.bordWars.player,True)[0]
                 print("this is from , to ",fromm,to)
@@ -139,7 +139,7 @@ class GameGui:
             color = COLORO
         else:
             color = COLOR
-        self.buttons[i][j]["bg"] = color 
+        self.buttons[i][j].config(bg=color, activebackground=color)
 
     # Initialize the game board to play with system / another player
     def initialize(self):
