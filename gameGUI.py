@@ -25,6 +25,7 @@ class GameGui:
         self.pressed_cell = None
         self.buttons = []
         self.level = level
+        self.isOver = False
 
     # checking how is the winner
     def check_win(self, gui, p1, p2):
@@ -37,19 +38,21 @@ class GameGui:
         elif check_win == 3:
             text = "Tie Game", "Tie Game"
         if text[0] != "":
-            gui.destroy()
             box = messagebox.showinfo(text[0], text[1])
-        p1.config(text=f'Player: {count1} pink')
-        p2.config(text=f'{self.second_player}: {count2} cyan')
+            if box == 'ok':
+                gui.destroy()
+            self.isOver = True
+        if not self.isOver:
+            p1.config(text=f'Player: {count1} pink')
+            p2.config(text=f'{self.second_player}: {count2} cyan')
 
     # Configure button color while playing with another player
     def get_move(self, i, j, gui, p1, p2):
         changed = self.update_gui(i, j, p1, p2, gui)
-        if changed:
+        if changed and not self.isOver:
             self.update_turn(p1, p2)
-        if changed and self.bordWars.player == "O" and self.second_player == 'Computer':
+        if changed and self.bordWars.player == "O" and self.second_player == 'Computer' and not self.isOver:
             minmax_res = minmax(self.bordWars, self.level, self.bordWars.player, True)
-            print("this is minmax_res", minmax_res)
             fromm, to = minmax_res[0]
             print("this is from , to ", fromm, to)
             (n, m), (i, j) = fromm, to

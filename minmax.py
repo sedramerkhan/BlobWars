@@ -4,7 +4,6 @@ def minmax(state, depth, player, maxplayer, alpha=-1000000, beta=1000000, enable
         return ((-1, -1), (-1, -1)), out
     out_key = None
     next_states = state.next_states()
-    print("thsi is next states at depth",depth,next_states)
     brk = False
     if maxplayer:
         out_e = int("-1000000")
