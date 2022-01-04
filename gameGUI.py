@@ -27,9 +27,9 @@ class GameGui:
         self.level = level
 
     # checking how is the winner
-    def check_win(self, gui):
+    def check_win(self, gui,p1,p2):
         text = "", ""
-        check_win = self.bordWars.check_win()
+        check_win,count1,count2 = self.bordWars.check_win()
         if check_win == 1:
             text = "Winner", f"Player {COLORX} won the match"
         elif check_win == 2:
@@ -39,6 +39,8 @@ class GameGui:
         if text[0] != "":
             # gui.destroy()
             messagebox.showinfo(text[0], text[1])
+        p1.config(text=f'Player: {count1} pink')
+        p2.config(text=f'{self.second_player}: {count1} cyan')
 
     # Configure button color while playing with another player
     def get_move(self, i, j, gui, p1, p2):
@@ -80,7 +82,7 @@ class GameGui:
                 for (n, m) in updated + [(i, j), (n, m)]:
                     self.update_color_at(n, m)
 
-                self.check_win(gui)
+                self.check_win(gui,p1,p2)
 
                 if self.second_player == 'Computer':
                     fromm, to = minmax(self.bordWars, self.level, self.bordWars.player, True)[0]
@@ -90,7 +92,7 @@ class GameGui:
 
                     for (n, m) in updated + [(i, j), (n, m)]:
                         self.update_color_at(n, m)
-                    self.check_win(gui)
+                    self.check_win(gui,p1,p2)
                 else:
                     p11.config(state=DISABLED)
                     p22.config(state=ACTIVE, activebackground=COLOR)

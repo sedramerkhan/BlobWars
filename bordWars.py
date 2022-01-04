@@ -22,17 +22,17 @@ class BordWars:
             count_p2 += row.count(opponent)
         if self.is_full():
             if count_p1 > count_p2:
-                return 1
+                return 1,count_p1,count_p2
             elif count_p2 > count_p1:
-                return 2
+                return 2,count_p1,count_p2
             else:
-                return 3
+                return 3,count_p1,count_p2
 
         if count_p2 == 0:
-            return 1
+            return 1,count_p1,count_p2
         if count_p1 == 0:
-            return 2
-        return 0
+            return 2,count_p1,count_p2
+        return 0,count_p1,count_p2
 
     # Check if the player can push the button or not
     def is_free(self, i, j):
@@ -130,7 +130,7 @@ class BordWars:
         return l
 
     def is_end(self):
-        return bool(self.check_win())
+        return bool(self.check_win()[0])
 
     def next_turn(self):
         return "O" if self.player == "X" else "X"
