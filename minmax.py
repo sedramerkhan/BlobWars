@@ -27,10 +27,10 @@ def minmax(state, depth, player, maxplayer, alpha=-1000000, beta=1000000, enable
                 break
             for to in next_states[fromm]:
                 _, cur_e = minmax(next_states[fromm][to], depth - 1, player, not maxplayer, alpha, beta, enable)
-            if out_e > cur_e:
-                out_e = cur_e
-                out_key = (fromm,to)
-            beta = min(beta, cur_e)
-            if enable and beta <= alpha:
-                break
+                if out_e > cur_e:
+                    out_e = cur_e
+                    out_key = (fromm,to)
+                beta = min(beta, cur_e)
+                if enable and beta <= alpha:
+                    break
     return (out_key, out_e)
