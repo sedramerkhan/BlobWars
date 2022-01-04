@@ -11,7 +11,7 @@ COLORX = "hotpink"
 COLORO = "cyan"
 COLOR = "lavender"
 PRESSED_X = "deeppink"
-PRESSED_O = "turquoise2"
+PRESSED_O = "teal"  # turquoise2
 COLOR_BORDER2 = "lightgray"
 COLOR_BORDER1 = "#AAAAAA"
 
@@ -27,32 +27,51 @@ class GameGui:
         self.level = level
 
     # checking how is the winner
-    def check_win(self, gui,p1,p2):
+    def check_win(self, gui, p1, p2):
         text = "", ""
-        check_win,count1,count2 = self.bordWars.check_win()
+        check_win, count1, count2 = self.bordWars.check_win()
         if check_win == 1:
-            text = "Winner", f"Player {COLORX} won the match"
+            text = "Winner", f"Player1 won the match"
         elif check_win == 2:
-            text = "Winner", f"Player {COLORO} won the match"
+            text = "Winner", f"{self.second_player} won the match"
         elif check_win == 3:
             text = "Tie Game", "Tie Game"
         if text[0] != "":
-            # gui.destroy()
-            messagebox.showinfo(text[0], text[1])
-        p2.config(text=f'Player: {count1} pink')
-        p1.config(text=f'{self.second_player}: {count2} cyan')
+            gui.destroy()
+            box = messagebox.showinfo(text[0], text[1])
+        p1.config(text=f'Player: {count1} pink')
+        p2.config(text=f'{self.second_player}: {count2} cyan')
 
     # Configure button color while playing with another player
     def get_move(self, i, j, gui, p1, p2):
-        self.update_gui(i, j, p2, p1, gui)
+        changed = self.update_gui(i, j, p1, p2, gui)
+        if changed:
+            self.update_turn(p1, p2)
+        if changed and self.bordWars.player == "O" and self.second_player == 'Computer':
+            minmax_res = minmax(self.bordWars, self.level, self.bordWars.player, True)
+            print("this is minmax_res", minmax_res)
+            fromm, to = minmax_res[0]
+            print("this is from , to ", fromm, to)
+            (n, m), (i, j) = fromm, to
+            self.update_gui(n, m, p1, p2, gui)
+            gui.after(500, lambda: self.update_gui(i, j, p1, p2, gui))
+            self.update_turn(p2, p1)
+            self.check_win(gui, p1, p2)
+
+    # update buttons state in turn buttons
+    def update_turn(self, p1, p2):
+        player = self.bordWars.player
+        print(player)
+        p11 = p1 if player == 'O' else p2
+        p22 = p2 if player == 'O' else p1
+        p11.config(state=DISABLED)
+        p22.config(state=ACTIVE, activebackground=COLOR)
 
     def update_gui(self, i, j, p1, p2, gui):
         button = self.buttons
         player = self.bordWars.player
         pressed_color = PRESSED_X if player == "X" else PRESSED_O
         color_player = COLORX if player == "X" else COLORO
-        p11 = p1 if player == 'O' else p2
-        p22 = p2 if player == 'O' else p1
 
         if self.bordWars.board[i][j] == player:
             if not self.pressed_cell:
@@ -81,26 +100,11 @@ class GameGui:
 
                 for (n, m) in updated + [(i, j), (n, m)]:
                     self.update_color_at(n, m)
-
-                self.check_win(gui,p1,p2)
-
-                if self.second_player == 'Computer':
-                    minax_res = minmax(self.bordWars, self.level, self.bordWars.player, True)
-                    print("this is minmax_res",minax_res)
-                    fromm, to = minax_res[0]
-                    print("this is from , to ", fromm, to)
-                    (n, m), (i, j) = fromm, to
-                    updated = self.bordWars.move(n, m, i, j)
-                    for (n, m) in updated + [(i, j), (n, m)]:
-                        self.update_color_at(n, m)
-                    self.check_win(gui,p1,p2)
-                else:
-                    p11.config(state=DISABLED)
-                    p22.config(state=ACTIVE, activebackground=COLOR)
-
+                self.check_win(gui, p1, p2)
             except ValueError as e:
                 print("error", e)
                 pass
+            return True
 
     # returning to default color
     def delete_first_border(self, i, j, color=COLOR):
@@ -142,12 +146,12 @@ class GameGui:
         # game_board.eval('tk::PlaceWindow . center')
         game_board.title("Bord Wars")
 
-        p1 = Button(game_board, text=f"Player: pink", width=13, bg=COLOR)
+        p1 = Button(game_board, text=f"Player: 2 pink", width=13, bg=COLOR)
         p1.pack(side="top")
 
         p2 = Button(
             game_board,
-            text=f"{self.second_player}: {COLORO}",
+            text=f"{self.second_player}: 2 {COLORO}",
             width=13,
             state=DISABLED,
             bg=COLOR,

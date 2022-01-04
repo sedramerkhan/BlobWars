@@ -81,7 +81,7 @@ class BordWars:
         start_x, end_x, start_y, end_y = self.calc_indexes(i, j)
         updated = []
         player = self.player
-        self.board[i][j] = player
+        # self.board[i][j] = player
         for c in range(start_y, end_y + 1):
             if self.update_cell(start_x, c):
                 updated.append((start_x, c))
