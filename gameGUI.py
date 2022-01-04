@@ -39,8 +39,8 @@ class GameGui:
         if text[0] != "":
             # gui.destroy()
             messagebox.showinfo(text[0], text[1])
-        p1.config(text=f'Player: {count1} pink')
-        p2.config(text=f'{self.second_player}: {count1} cyan')
+        p2.config(text=f'Player: {count1} pink')
+        p1.config(text=f'{self.second_player}: {count2} cyan')
 
     # Configure button color while playing with another player
     def get_move(self, i, j, gui, p1, p2):
@@ -85,11 +85,12 @@ class GameGui:
                 self.check_win(gui,p1,p2)
 
                 if self.second_player == 'Computer':
-                    fromm, to = minmax(self.bordWars, self.level, self.bordWars.player, True)[0]
+                    minax_res = minmax(self.bordWars, self.level, self.bordWars.player, True)
+                    print("this is minmax_res",minax_res)
+                    fromm, to = minax_res[0]
                     print("this is from , to ", fromm, to)
                     (n, m), (i, j) = fromm, to
                     updated = self.bordWars.move(n, m, i, j)
-
                     for (n, m) in updated + [(i, j), (n, m)]:
                         self.update_color_at(n, m)
                     self.check_win(gui,p1,p2)
@@ -141,13 +142,13 @@ class GameGui:
         # game_board.eval('tk::PlaceWindow . center')
         game_board.title("Bord Wars")
 
-        p1 = Button(game_board, text=f"Player: pink", width=11, bg=COLOR)
+        p1 = Button(game_board, text=f"Player: pink", width=13, bg=COLOR)
         p1.pack(side="top")
 
         p2 = Button(
             game_board,
             text=f"{self.second_player}: {COLORO}",
-            width=11,
+            width=13,
             state=DISABLED,
             bg=COLOR,
         )

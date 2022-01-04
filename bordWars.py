@@ -136,7 +136,7 @@ class BordWars:
         return "O" if self.player == "X" else "X"
 
     def next_states(self):
-        if self.check_win():
+        if self.is_end():
             return {}
         out = {}
         for i in range(self.height):
