@@ -18,7 +18,7 @@ COLOR_BORDER1 = "#AAAAAA"
 
 
 class GameGui:
-    def __init__(self, width, height, second_player, level):
+    def __init__(self, width, height, second_player, level,enable):
         self.bordWars = BordWars(width, height, "X")
         self.width = width
         self.height = height
