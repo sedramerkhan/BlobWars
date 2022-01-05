@@ -92,8 +92,6 @@ class BordWars:
             updated.append((i, start_y))
         if self.update_cell(i, end_y):
             updated.append((i, end_y))
-
-        print(self)
         return updated
 
     def calc_indexes(self, i, j, num=1):

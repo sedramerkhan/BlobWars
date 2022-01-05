@@ -1,5 +1,6 @@
 # importing all necessary libraries
 import time
+import tkinter
 from functools import partial
 from tkinter import *
 from tkinter import messagebox
@@ -17,7 +18,7 @@ COLOR_BORDER1 = "#AAAAAA"
 
 
 class GameGui:
-    def __init__(self, width, height, second_player, level):
+    def __init__(self, width, height, second_player, level, enable):
         self.bordWars = BordWars(width, height, "X")
         self.width = width
         self.height = height
@@ -26,8 +27,9 @@ class GameGui:
         self.buttons = []
         self.level = level
         self.isOver = False
+        self.enable = enable
+        # checking how is the winner
 
-    # checking how is the winner
     def check_win(self, gui, p1, p2):
         text = "", ""
         check_win, count1, count2 = self.bordWars.check_win()
@@ -52,9 +54,11 @@ class GameGui:
         if changed and not self.isOver:
             self.update_turn(p1, p2)
         if changed and self.bordWars.player == "O" and self.second_player == 'Computer' and not self.isOver:
-            minmax_res = minmax(self.bordWars, self.level, self.bordWars.player, True)
+            start = time.time()
+            minmax_res = minmax(self.bordWars, self.level, self.bordWars.player, True, self.enable)
+            end = time.time()
+            print("time : ",end-start )
             fromm, to = minmax_res[0]
-            print("this is from , to ", fromm, to)
             (n, m), (i, j) = fromm, to
             self.update_gui(n, m, p1, p2, gui)
             gui.after(500, lambda: self.update_gui(i, j, p1, p2, gui))
@@ -160,6 +164,7 @@ class GameGui:
             bg=COLOR,
         )
         p2.pack(side="top")
+        Label(game_board,text = f"alpha beta state: {'enabled' if self.enable else 'disabled'}, level: {self.level}").pack(side = TOP)
 
         self.game_board(game_board, p1, p2)
         game_board.geometry("+200+20")

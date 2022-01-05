@@ -1,3 +1,4 @@
+import tkinter
 from functools import partial
 from tkinter import *
 
@@ -9,12 +10,14 @@ class MenuGUI:
     def __init__(self):
         self.menu = Tk()
         menu = self.menu
+        self.enable_cut_var = tkinter.IntVar()
         # menu.eval('tk::PlaceWindow . center ')
         menu.geometry("350x350+500+100")
         menu.config(bg="snow")
         menu.title("Bord Wars")
         entry_frame = self.initialize_entries()
         level = self.initialize_level_entry()
+
         head = Label(menu, text="Welcome to Bord Wars Game", bg="snow", fg="black", font='Times 15', height=3)
         B1 = self.make_button(menu, "Single Player", partial(self.play, "Computer"))
         B2 = self.make_button(menu, "Multi Player", partial(self.play, "Player 2"))
@@ -23,9 +26,12 @@ class MenuGUI:
         head.pack(side='top')
         entry_frame.pack(side='top', pady=5)
         level.pack(side='top', fill=BOTH, pady=8)
+        Checkbutton(menu, text="enable alpha-beta cut", variable=self.enable_cut_var, font='Times 15',) \
+            .pack(side=TOP)
         B1.pack(side='top')
         B2.pack(side='top', pady=5)
         B3.pack(side='top')
+
         menu.mainloop()
 
     def make_button(self, tk, text, command) -> Button:
@@ -47,9 +53,9 @@ class MenuGUI:
 
         level = self.e3.get()
         level = int(level) if level != "" and level.isdecimal() else 1
-
+        enable = self.enable_cut_var.get()
         self.menu.destroy()
-        game = GameGui(width, height, second_player, level)
+        game = GameGui(width, height, second_player, level,bool(enable))
         game.initialize()
 
     def initialize_entries(self):
@@ -58,6 +64,8 @@ class MenuGUI:
         self.e2 = Entry(entry_frame, width=5)
         text = Label(entry_frame, text="Enter width and height ", bg="snow", fg="black", font='Times 15')
         text.pack(side='left')
+
+
         self.e1.pack(side='left', padx=15)
         self.e2.pack(side='left')
         return entry_frame
