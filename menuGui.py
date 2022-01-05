@@ -1,3 +1,4 @@
+import tkinter
 from functools import partial
 from tkinter import *
 
@@ -8,6 +9,7 @@ class MenuGUI:
 
     def __init__(self):
         self.menu = Tk()
+        self.enable_var = tkinter.IntVar()
         menu = self.menu
         # menu.eval('tk::PlaceWindow . center ')
         menu.geometry("350x350+500+100")
@@ -23,6 +25,8 @@ class MenuGUI:
         head.pack(side='top')
         entry_frame.pack(side='top', pady=5)
         level.pack(side='top', fill=BOTH, pady=8)
+        Checkbutton(menu, text="enable alpha-beta cut", variable=self.enable_var, font='Times 15', ) \
+            .pack(side=TOP)
         B1.pack(side='top')
         B2.pack(side='top', pady=5)
         B3.pack(side='top')
@@ -47,9 +51,9 @@ class MenuGUI:
 
         level = self.e3.get()
         level = int(level) if level != "" and level.isdecimal() else 1
-
+        enable = self.enable_var.get()
         self.menu.destroy()
-        game = GameGui(width, height, second_player, level)
+        game = GameGui(width, height, second_player, level,enable)
         game.initialize()
 
     def initialize_entries(self):

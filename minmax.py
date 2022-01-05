@@ -33,4 +33,4 @@ def minmax(state, depth, player, maxplayer, alpha=-1000000, beta=1000000, enable
                 if enable and beta <= alpha:
                     brk = True
                     break
-    return (out_key, out_e)
+    return out_key, out_e
