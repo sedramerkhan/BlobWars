@@ -49,22 +49,23 @@ class GameGui:
     # Configure button color while playing with another player
     def get_move(self, i, j, gui, p1, p2):
         changed = self.update_gui(i, j, p1, p2, gui)
-        if changed and not self.isOver:
-            self.update_turn(p1, p2)
-        if changed and self.bordWars.player == "O" and self.second_player == 'Computer' and not self.isOver:
-            alphabetacut = lambda enable: minmax(self.bordWars, self.level, self.bordWars.player, True, enable)
-            out = comparator.compare(
-                lambda: alphabetacut(True),
-                lambda: alphabetacut(False))
-            for key in out:
-                print(f"{key[:-1:].strip()} : {out[key][1]}")
-            key = list(out.values())[0][0][0]
-            fromm, to = key
-            (n, m), (i, j) = fromm, to
-            self.update_gui(n, m, p1, p2, gui)
-            gui.after(500, lambda: self.update_gui(i, j, p1, p2, gui))
-            self.update_turn(p2, p1)
-            self.check_win(gui, p1, p2)
+        if changed:
+            if not self.isOver:
+                self.update_turn(p1, p2)
+            if self.bordWars.player == "O" and self.second_player == 'Computer' and not self.isOver:
+                alphabetacut = lambda enable: minmax(self.bordWars, self.level, self.bordWars.player, True, enable)
+                out = comparator.compare(
+                    lambda: alphabetacut(True),
+                    lambda: alphabetacut(False))
+                for key in out:
+                    print(f"{key[:-1:].strip()} : {out[key]}")
+                key = list(out.values())[0][0][0]
+                fromm, to = key
+                (n, m), (i, j) = fromm, to
+                self.update_gui(n, m, p1, p2, gui)
+                gui.after(500, lambda: self.update_gui(i, j, p1, p2, gui))
+                self.update_turn(p2, p1)
+                self.check_win(gui, p1, p2)
 
     # update buttons state in turn buttons
     def update_turn(self, p1, p2):
