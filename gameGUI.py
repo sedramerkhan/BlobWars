@@ -68,7 +68,6 @@ class GameGui:
     # update buttons state in turn buttons
     def update_turn(self, p1, p2):
         player = self.bordWars.player
-        print(player)
         p11 = p1 if player == 'O' else p2
         p22 = p2 if player == 'O' else p1
         p11.config(state=DISABLED)

@@ -167,4 +167,3 @@ class BordWars:
 
 if __name__ == "__main__":
     game = BordWars(10, 12, "X")
-    print(len(game.next_states()[0].next_states()))
