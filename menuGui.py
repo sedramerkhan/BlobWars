@@ -30,6 +30,7 @@ class MenuGUI:
         B1.pack(side='top')
         B2.pack(side='top', pady=5)
         B3.pack(side='top')
+
         menu.mainloop()
 
     def make_button(self, tk, text, command) -> Button:
@@ -62,6 +63,8 @@ class MenuGUI:
         self.e2 = Entry(entry_frame, width=5)
         text = Label(entry_frame, text="Enter width and height ", bg="snow", fg="black", font='Times 15')
         text.pack(side='left')
+
+
         self.e1.pack(side='left', padx=15)
         self.e2.pack(side='left')
         return entry_frame

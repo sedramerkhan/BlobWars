@@ -1,5 +1,6 @@
 # importing all necessary libraries
 import time
+import tkinter
 from functools import partial
 from tkinter import *
 from tkinter import messagebox
@@ -17,7 +18,7 @@ COLOR_BORDER1 = "#AAAAAA"
 
 
 class GameGui:
-    def __init__(self, width, height, second_player, level, enable):
+    def __init__(self, width, height, second_player, level):
         self.bordWars = BordWars(width, height, "X")
         self.width = width
         self.height = height
