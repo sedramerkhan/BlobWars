@@ -167,7 +167,7 @@ class GameGui:
             bg=COLOR,
         )
         p2.pack(side="top")
-        self.info = Label(game_board, text=f"cut: {bool(self.enable)}, depth: {self.level}, cost: {self.cost}", font='Times 12')
+        self.info = Label(game_board, text=f"cut: {bool(self.enable)}, depth: {self.level}, cost: {self.cost}", bg=COLOR, font='Times 12')
         self.info.pack(side='top')
         self.game_board(game_board, p1, p2)
         game_board.geometry("+200+20")

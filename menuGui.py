@@ -24,8 +24,8 @@ class MenuGUI:
 
         head.pack(side='top')
         entry_frame.pack(side='top', pady=5)
-        level.pack(side='top', fill=BOTH, pady=8)
-        Checkbutton(menu, text="enable alpha-beta cut", variable=self.enable_var, font='Times 15', ) \
+        level.pack(side='top', fill=BOTH)
+        Checkbutton(menu, text="Enable alpha-beta cut", variable=self.enable_var, font='Times 15', bg='snow', ) \
             .pack(side=TOP)
         B1.pack(side='top')
         B2.pack(side='top', pady=5)
