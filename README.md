@@ -1,12 +1,13 @@
 # BlobWars
 Blob Wars is a fun and addictive strategy game. Your aim is to gain control of the board by attacking you opponents blobs and converting them to your own.
 Your target is converting your opponent's blobs into your own.
+
 You can play both 1 Player or 2 Players mod. Game is played by Mouse.
 
-
-Minmax staratgey with Alpha-Beta Cutoff is used with one player mode.
+__Minmax__ staratgey with __Alpha-Beta Cutoff__ is used with one player mode.
 
 _How to Play_
+
 The rules are very simple. You can spawn a blob into an adjacent space or you can jump into a an open space one
 
 ## Technologies
